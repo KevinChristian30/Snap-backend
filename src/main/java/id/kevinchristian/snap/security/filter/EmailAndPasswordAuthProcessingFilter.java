@@ -23,9 +23,10 @@ public class EmailAndPasswordAuthProcessingFilter extends AbstractAuthentication
     private final AuthenticationSuccessHandler authenticationSuccessHandler;
     private final AuthenticationFailureHandler authenticationFailureHandler;
 
-    public EmailAndPasswordAuthProcessingFilter(String defaultFilterProcessesUrl, ObjectMapper objectMapper,
-                                                   AuthenticationSuccessHandler authenticationSuccessHandler,
-                                                   AuthenticationFailureHandler authenticationFailureHandler) {
+    public EmailAndPasswordAuthProcessingFilter(
+            String defaultFilterProcessesUrl, ObjectMapper objectMapper,
+            AuthenticationSuccessHandler authenticationSuccessHandler,
+            AuthenticationFailureHandler authenticationFailureHandler) {
         super(defaultFilterProcessesUrl);
         this.objectMapper = objectMapper;
         this.authenticationSuccessHandler = authenticationSuccessHandler;
@@ -47,15 +48,14 @@ public class EmailAndPasswordAuthProcessingFilter extends AbstractAuthentication
     }
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
-                                            FilterChain chain, Authentication authResult) throws IOException,
-            ServletException {
+    protected void successfulAuthentication(
+            HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         authenticationSuccessHandler.onAuthenticationSuccess(request, response, authResult);
     }
 
     @Override
-    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
-                                              AuthenticationException failed) throws IOException, ServletException {
+    protected void unsuccessfulAuthentication(
+            HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
         authenticationFailureHandler.onAuthenticationFailure(request, response, failed);
     }
 }

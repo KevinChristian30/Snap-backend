@@ -21,9 +21,6 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import java.util.Arrays;
-import java.util.List;
-
 @EnableWebSecurity
 @EnableMethodSecurity
 @Configuration
@@ -51,8 +48,7 @@ public class SecurityConfig {
             ObjectMapper objectMapper, AuthenticationSuccessHandler authenticationSuccessHandler,
             AuthenticationFailureHandler authenticationFailureHandler, AuthenticationManager authenticationManager) {
         EmailAndPasswordAuthProcessingFilter filter = new EmailAndPasswordAuthProcessingFilter(Constants.AUTH_URL,
-                objectMapper
-                , authenticationSuccessHandler, authenticationFailureHandler);
+                objectMapper, authenticationSuccessHandler, authenticationFailureHandler);
         filter.setAuthenticationManager(authenticationManager);
         return filter;
     }
@@ -64,16 +60,8 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(
-            HttpSecurity httpSecurity,
-            EmailAndPasswordAuthProcessingFilter emailAndPasswordAuthProcessingFilter) throws Exception {
-        httpSecurity.authorizeHttpRequests()
-                .requestMatchers(Constants.PERMIT_ENDPOINT_LIST.toArray(new String[0])).permitAll()
-                .requestMatchers(Constants.V1_URL).authenticated()
-                .and()
-                .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .httpBasic();
+            HttpSecurity httpSecurity, EmailAndPasswordAuthProcessingFilter emailAndPasswordAuthProcessingFilter) throws Exception {
+        httpSecurity.authorizeHttpRequests().requestMatchers(Constants.PERMIT_ENDPOINT_LIST.toArray(new String[0])).permitAll().requestMatchers(Constants.V1_URL).authenticated().and().csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().httpBasic();
 
         httpSecurity.addFilterBefore(emailAndPasswordAuthProcessingFilter, UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
