@@ -5,6 +5,7 @@ import id.kevinchristian.snap.security.filter.EmailAndPasswordAuthProcessingFilt
 import id.kevinchristian.snap.security.handler.EmailAndPasswordAuthFailureHandler;
 import id.kevinchristian.snap.security.handler.EmailAndPasswordAuthSuccessHandler;
 import id.kevinchristian.snap.security.provider.EmailAndPasswordAuthProvider;
+import id.kevinchristian.snap.security.util.JWTTokenFactory;
 import id.kevinchristian.snap.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -29,8 +30,9 @@ public class SecurityConfig {
     private EmailAndPasswordAuthProvider emailAndPasswordAuthProvider;
 
     @Bean
-    public AuthenticationSuccessHandler authenticationSuccessHandler(ObjectMapper objectMapper) {
-        return new EmailAndPasswordAuthSuccessHandler(objectMapper);
+    public AuthenticationSuccessHandler authenticationSuccessHandler(
+            ObjectMapper objectMapper, JWTTokenFactory jwtTokenFactory) {
+        return new EmailAndPasswordAuthSuccessHandler(objectMapper, jwtTokenFactory);
     }
 
     @Bean

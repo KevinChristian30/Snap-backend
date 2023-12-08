@@ -1,6 +1,7 @@
 package id.kevinchristian.snap.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import id.kevinchristian.snap.util.Constants;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,7 +23,7 @@ public class EmailAndPasswordAuthFailureHandler implements AuthenticationFailure
     public void onAuthenticationFailure(
             HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         Map<String, String> result = new HashMap<>();
-        result.put("result", "Failure");
+        result.put("message", Constants.ErrorMessage.Authentication.BAD_CREDENTIALS);
 
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);

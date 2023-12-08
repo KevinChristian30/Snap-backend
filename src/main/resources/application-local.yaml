@@ -33,3 +33,9 @@ logging:
   level:
     org.springframework: INFO
     org.flyway: DEBUG
+
+application:
+  properties:
+    token-duration-in-minutes: 120
+    token-issuer: snap.kevinchristian.id
+    key: 6466fac3b2794fe2a5de5200086b8cdcirtd7t2aas86g
