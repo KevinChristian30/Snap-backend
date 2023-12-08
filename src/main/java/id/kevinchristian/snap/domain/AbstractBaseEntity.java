@@ -8,7 +8,6 @@ import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 
-import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -19,8 +18,7 @@ import java.util.UUID;
 @Table(indexes = {@Index(name = "uk_secure_id", columnList = "secure_id")})
 @MappedSuperclass
 public abstract class AbstractBaseEntity implements Serializable {
-    @Serial
-    private static final long serialVersionUID = -7368820601847524274L;
+    private static final long serialVersionUID = -8107586636231697685L;
 
     @Column(name = "secure_id", unique = true, length = 36)
     private String secureId = UUID.randomUUID().toString();
