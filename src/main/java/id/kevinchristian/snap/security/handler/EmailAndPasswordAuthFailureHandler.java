@@ -23,7 +23,7 @@ public class EmailAndPasswordAuthFailureHandler implements AuthenticationFailure
     public void onAuthenticationFailure(
             HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         Map<String, String> result = new HashMap<>();
-        result.put("message", Constants.ErrorMessage.Authentication.BAD_CREDENTIALS);
+        result.put(Constants.ResponseBodyKey.MESSAGE, Constants.ErrorMessage.Authentication.BAD_CREDENTIALS);
 
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);

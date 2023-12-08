@@ -2,6 +2,7 @@ package id.kevinchristian.snap.security.provider;
 
 import id.kevinchristian.snap.security.model.JWTAuthToken;
 import id.kevinchristian.snap.security.model.RawJWTAccessToken;
+import id.kevinchristian.snap.security.model.SnapUserDetails;
 import id.kevinchristian.snap.util.Constants;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -28,47 +29,13 @@ public class JWTAuthProvider implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         RawJWTAccessToken token = (RawJWTAccessToken) authentication.getCredentials();
         Jws<Claims> jwsClaims = token.parseClaims(key);
+
         String subject = jwsClaims.getBody().getSubject();
         List<String> roles = jwsClaims.getBody().get(Constants.ClaimsKey.ROLES, List.class);
         List<GrantedAuthority> grantedAuthorities =
                 roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
 
-        UserDetails userDetails = new UserDetails() {
-            @Override
-            public Collection<? extends GrantedAuthority> getAuthorities() {
-                return grantedAuthorities;
-            }
-
-            @Override
-            public String getPassword() {
-                return null;
-            }
-
-            @Override
-            public String getUsername() {
-                return subject;
-            }
-
-            @Override
-            public boolean isAccountNonExpired() {
-                return true;
-            }
-
-            @Override
-            public boolean isAccountNonLocked() {
-                return true;
-            }
-
-            @Override
-            public boolean isCredentialsNonExpired() {
-                return true;
-            }
-
-            @Override
-            public boolean isEnabled() {
-                return true;
-            }
-        };
+        UserDetails userDetails = new SnapUserDetails(subject, grantedAuthorities);
 
         return new JWTAuthToken(userDetails, grantedAuthorities);
     }

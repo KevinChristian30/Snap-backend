@@ -28,6 +28,15 @@ public class Constants {
         public static final String AUTHORIZATION = "Authorization";
     }
 
+    public static final class ResponseBodyKey {
+        ResponseBodyKey() {
+            throw new IllegalStateException(CONSTANTS);
+        }
+
+        public static final String MESSAGE = "message";
+        public static final String TOKEN = "token";
+    }
+
     public static final class ClaimsKey {
         ClaimsKey() {
             throw new IllegalStateException(CONSTANTS);

@@ -21,8 +21,8 @@ public class JWTTokenFactory {
     private final ApplicationProperties applicationProperties;
     private final Key secret;
 
-    public JWTAccessToken createJWTAccessToken(String email, Collection<? extends GrantedAuthority> authorities) {
-        Claims claims = (Claims) Jwts.claims().setSubject(email);
+    public JWTAccessToken createJWTAccessToken(String username, Collection<? extends GrantedAuthority> authorities) {
+        Claims claims = (Claims) Jwts.claims().setSubject(username);
         claims.put(Constants.ClaimsKey.ROLES, authorities.stream().map(a -> a.getAuthority()).collect(Collectors.toList()));
 
         LocalDateTime now = LocalDateTime.now();

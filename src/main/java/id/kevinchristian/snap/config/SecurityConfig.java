@@ -11,6 +11,7 @@ import id.kevinchristian.snap.security.util.JWTTokenFactory;
 import id.kevinchristian.snap.security.util.SkipPathRequestMatcher;
 import id.kevinchristian.snap.security.util.TokenExtractor;
 import id.kevinchristian.snap.util.Constants;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +21,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -29,12 +31,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableMethodSecurity
 @Configuration
+@AllArgsConstructor
 public class SecurityConfig {
-    @Autowired
-    private EmailAndPasswordAuthProvider emailAndPasswordAuthProvider;
-
-    @Autowired
-    private JWTAuthProvider jwtAuthProvider;
+    private final EmailAndPasswordAuthProvider emailAndPasswordAuthProvider;
+    private final JWTAuthProvider jwtAuthProvider;
 
     @Bean
     public AuthenticationSuccessHandler authenticationSuccessHandler(
@@ -85,16 +85,15 @@ public class SecurityConfig {
             HttpSecurity httpSecurity, EmailAndPasswordAuthProcessingFilter emailAndPasswordAuthProcessingFilter,
             JWTAuthProcessingFilter jwtAuthProcessingFilter) throws Exception {
         httpSecurity
-            .csrf(csrf -> csrf.disable())
+            .csrf(AbstractHttpConfigurer::disable)
+            .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth ->
                 auth.requestMatchers(Constants.PERMIT_ENDPOINT_LIST.toArray(new String[0])).permitAll()
                     .requestMatchers(Constants.AUTHENTICATE_ENDPOINT_LIST.toArray(new String[0])).authenticated()
-            )
-            .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+            );
 
-        httpSecurity.addFilterBefore(emailAndPasswordAuthProcessingFilter,
-                UsernamePasswordAuthenticationFilter.class).addFilterBefore(jwtAuthProcessingFilter,
-                UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.addFilterBefore(emailAndPasswordAuthProcessingFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthProcessingFilter, UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
     }
 }
