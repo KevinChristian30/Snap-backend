@@ -2,6 +2,7 @@ package id.kevinchristian.snap.security.util;
 
 import id.kevinchristian.snap.config.properties.ApplicationProperties;
 import id.kevinchristian.snap.security.model.JWTAccessToken;
+import id.kevinchristian.snap.util.Constants;
 import id.kevinchristian.snap.util.TimeUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -22,7 +23,7 @@ public class JWTTokenFactory {
 
     public JWTAccessToken createJWTAccessToken(String email, Collection<? extends GrantedAuthority> authorities) {
         Claims claims = (Claims) Jwts.claims().setSubject(email);
-        claims.put("roles", authorities.stream().map(a -> a.getAuthority()).collect(Collectors.toList()));
+        claims.put(Constants.ClaimsKey.ROLES, authorities.stream().map(a -> a.getAuthority()).collect(Collectors.toList()));
 
         LocalDateTime now = LocalDateTime.now();
         Date currentTime = TimeUtil.localDateTimeToDate(now);

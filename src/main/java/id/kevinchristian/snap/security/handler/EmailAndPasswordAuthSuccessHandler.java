@@ -31,7 +31,7 @@ public class EmailAndPasswordAuthSuccessHandler implements AuthenticationSuccess
                 userDetails.getAuthorities());
 
         Map<String, String> result = new HashMap<>();
-        result.put("result", token.getToken());
+        result.put("token", token.getToken());
 
         response.setStatus(HttpStatus.OK.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
