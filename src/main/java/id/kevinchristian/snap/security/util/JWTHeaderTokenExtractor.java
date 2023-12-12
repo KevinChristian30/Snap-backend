@@ -16,7 +16,7 @@ public class JWTHeaderTokenExtractor implements TokenExtractor {
         }
 
         if (payload.length() < HEADER_PREFIX.length()) {
-            throw new AuthenticationServiceException(Constants.ErrorMessage.Authentication.INVALID_TOKEN);
+            throw new AuthenticationServiceException(Constants.ErrorMessage.Authentication.TOKEN_IS_INVALID);
         }
 
         return payload.substring(HEADER_PREFIX.length());

@@ -27,13 +27,6 @@ public abstract class AbstractBaseEntity implements Serializable {
     @Column(name = "created_date", nullable = false, updatable = false)
     private LocalDateTime createdDate = LocalDateTime.now();
 
-    @CreatedBy
-    @Column(name = "created_by", nullable = false, updatable = false)
-    private String createdBy;
-
-    @LastModifiedBy
-    @Column(name = "modified_by")
-
     @Version
     private Integer version;
 
