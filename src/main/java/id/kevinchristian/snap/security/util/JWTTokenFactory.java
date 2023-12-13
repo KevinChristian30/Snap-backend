@@ -1,6 +1,7 @@
 package id.kevinchristian.snap.security.util;
 
 import id.kevinchristian.snap.config.properties.ApplicationProperties;
+import id.kevinchristian.snap.domain.User;
 import id.kevinchristian.snap.security.model.JWTAccessToken;
 import id.kevinchristian.snap.util.Constants;
 import id.kevinchristian.snap.util.TimeUtil;
@@ -21,9 +22,14 @@ public class JWTTokenFactory {
     private final ApplicationProperties applicationProperties;
     private final Key secret;
 
-    public JWTAccessToken createJWTAccessToken(String username, Collection<? extends GrantedAuthority> authorities) {
-        Claims claims = (Claims) Jwts.claims().setSubject(username);
-        claims.put(Constants.ClaimsKey.ROLES, authorities.stream().map(a -> a.getAuthority()).collect(Collectors.toList()));
+    public JWTAccessToken createJWTAccessToken(
+            User user,
+            Collection<? extends GrantedAuthority> authorities) {
+        Claims claims = (Claims) Jwts.claims().setSubject(user.getEmail());
+        claims.put(Constants.ClaimsKey.ROLES,
+                authorities.stream().map(a -> a.getAuthority()).collect(Collectors.toList()));
+        claims.put(Constants.ClaimsKey.USERNAME, user.getUsername() == null ? "" : user.getUsername());
+        claims.put(Constants.ClaimsKey.IS_EMAIL_VERIFIED, user.getEmailConfirmed());
 
         LocalDateTime now = LocalDateTime.now();
         Date currentTime = TimeUtil.localDateTimeToDate(now);
@@ -31,7 +37,13 @@ public class JWTTokenFactory {
                 TimeUtil.localDateTimeToDate(now.plusMinutes(applicationProperties.getTokenDurationInMinutes()));
 
         String token =
-                Jwts.builder().setClaims(claims).setIssuer(applicationProperties.getTokenIssuer()).setIssuedAt(currentTime).setExpiration(expiredTime).signWith(secret, SignatureAlgorithm.HS256).compact();
+                Jwts.builder()
+                        .setClaims(claims)
+                        .setIssuer(applicationProperties.getTokenIssuer())
+                        .setIssuedAt(currentTime)
+                        .setExpiration(expiredTime)
+                        .signWith(secret, SignatureAlgorithm.HS256)
+                        .compact();
 
         return new JWTAccessToken(token, claims);
     }

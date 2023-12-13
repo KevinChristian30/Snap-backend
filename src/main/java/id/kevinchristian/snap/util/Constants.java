@@ -44,6 +44,9 @@ public class Constants {
         }
 
         public static final String ROLES = "roles";
+        public static final String USERNAME = "username";
+        public static final String EMAIL = "email";
+        public static final String IS_EMAIL_VERIFIED = "is_email_verified";
     }
 
     public static final class ErrorMessage {
