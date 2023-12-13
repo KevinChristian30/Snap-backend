@@ -3,12 +3,15 @@ package id.kevinchristian.snap.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import id.kevinchristian.snap.config.properties.ApplicationProperties;
 import id.kevinchristian.snap.security.util.JWTTokenFactory;
+import id.kevinchristian.snap.util.Constants;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.security.Key;
 
@@ -39,5 +42,18 @@ public class AppConfig {
     @Bean
     public ObjectMapper objectMapper() {
         return new ObjectMapper();
+    }
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer(ApplicationProperties applicationProperties) {
+        String origin = applicationProperties.getClientUrl();
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping(Constants.V1_URL).allowedOrigins(origin);
+                registry.addMapping(Constants.SIGN_IN_URL).allowedOrigins(origin);
+                registry.addMapping(Constants.SIGN_UP_URL).allowedOrigins(origin);
+            }
+        };
     }
 }
