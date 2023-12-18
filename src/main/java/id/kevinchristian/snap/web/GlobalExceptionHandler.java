@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.*;
@@ -30,10 +31,11 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public ResponseEntity<Map<String, List<String>>> handleResourceNotFoundExceptionErrors(ResourceNotFoundException exception) {
         List<String> errors = Collections.singletonList(exception.getMessage());
 
-        return new ResponseEntity<>(constructErrorsMap(errors), new HttpHeaders(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(constructErrorsMap(errors), new HttpHeaders(), HttpStatus.NOT_FOUND);
     }
 
     private Map<String, List<String>> constructErrorsMap(List<String> errors) {
