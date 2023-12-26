@@ -29,10 +29,10 @@ spring:
       max-request-size: 2MB
       max-file-size: 2MB
   mail:
-    host: smtp.gmail.com
+    host: smtp.office365.com
     port: 587
-    username: kdotchrist30@gmail.com
-    password: yrgoodtotmuosfza
+    username: no-reply.snap@outlook.com
+    password: snapapp123
     properties:
       mail:
         smtp:

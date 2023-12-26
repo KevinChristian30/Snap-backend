@@ -12,6 +12,8 @@ public class Constants {
     public static final String V1_URL = "/v1/**";
     public static final String SIGN_IN_URL = "/auth/sign-in";
     public static final String SIGN_UP_URL = "/auth/sign-up";
+    public static final String SMTP_NO_REPLY_EMAIL = "no-reply.snap@outlook.com";
+
     public final static List<String> PERMIT_ENDPOINT_LIST = Arrays.asList(SIGN_IN_URL, "/swagger-ui.html",
             "/swagger-ui" + "/index.html", "/swagger-ui/index.css", "/favicon.ico", "/swagger-ui/swagger-ui.css",
             "/swagger-ui" + "/swagger-ui.css.map", "/swagger-ui/swagger-ui-standalone-preset.js", "/swagger-ui" +

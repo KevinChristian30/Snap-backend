@@ -7,6 +7,7 @@ import id.kevinchristian.snap.exception.BadRequestException;
 import id.kevinchristian.snap.repository.UserRepository;
 import id.kevinchristian.snap.security.model.SnapUserDetails;
 import id.kevinchristian.snap.service.AuthService;
+import id.kevinchristian.snap.service.UserService;
 import id.kevinchristian.snap.util.Constants;
 import lombok.AllArgsConstructor;
 
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
+    private final UserService userService;
     private final PasswordEncoder passwordEncoder;
     private final JavaMailSender mailSender;
 
@@ -51,11 +53,17 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void sendEmailConfirmation() {
+        // Todo: Validate time for code generation
+        // Todo: Store code in database
+        // Todo: Send code as email
+
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        simpleMailMessage.setFrom("kdotchrist30@gmail.com");
-        simpleMailMessage.setTo("kdotchrist30@gmail.com");
-        simpleMailMessage.setText("Test Email Body");
-        simpleMailMessage.setSubject("Test Email Subject");
+        simpleMailMessage.setFrom(Constants.SMTP_NO_REPLY_EMAIL);
+
+        UserResponseDTO userResponseDTO = findCurrentUserDetails();
+        simpleMailMessage.setTo(userResponseDTO.email());
+        simpleMailMessage.setSubject("Confirm Your Email");
+        simpleMailMessage.setText("Your confirmation code is ");
 
         mailSender.send(simpleMailMessage);
     }
