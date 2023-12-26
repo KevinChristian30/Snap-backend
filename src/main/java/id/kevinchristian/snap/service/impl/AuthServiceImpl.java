@@ -10,6 +10,8 @@ import id.kevinchristian.snap.service.AuthService;
 import id.kevinchristian.snap.util.Constants;
 import lombok.AllArgsConstructor;
 
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Service;
 public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JavaMailSender mailSender;
 
     @Override
     public void signUp(UserCreateRequestDTO dto) {
@@ -44,5 +47,16 @@ public class AuthServiceImpl implements AuthService {
         return new UserResponseDTO(user.getSubject(),
                 user.getGrantedAuthorities().stream().map(ga -> ga.getAuthority()).toList(),
                 user.getUsername(), user.getIsEmailVerified());
+    }
+
+    @Override
+    public void sendEmailConfirmation() {
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        simpleMailMessage.setFrom("kdotchrist30@gmail.com");
+        simpleMailMessage.setTo("kdotchrist30@gmail.com");
+        simpleMailMessage.setText("Test Email Body");
+        simpleMailMessage.setSubject("Test Email Subject");
+
+        mailSender.send(simpleMailMessage);
     }
 }

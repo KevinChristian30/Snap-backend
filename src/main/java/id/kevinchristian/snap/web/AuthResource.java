@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @RestController
@@ -32,5 +34,12 @@ public class AuthResource {
     @GetMapping("/v1/auth/me")
     public ResponseEntity<UserResponseDTO> getCurrentUser() {
         return ResponseEntity.ok(authService.findCurrentUserDetails());
-    }   
+    }
+
+    @GetMapping("/v1/auth/confirm-email")
+    public ResponseEntity<Void> getMethodName() {
+        authService.sendEmailConfirmation();
+        return ResponseEntity.ok().build();
+    }
+    
 }

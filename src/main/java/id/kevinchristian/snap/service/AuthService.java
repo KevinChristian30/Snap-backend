@@ -7,4 +7,6 @@ public interface AuthService {
     void signUp(UserCreateRequestDTO dto);
 
     UserResponseDTO findCurrentUserDetails();
+
+    void sendEmailConfirmation();
 }
