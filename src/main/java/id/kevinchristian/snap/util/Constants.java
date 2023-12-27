@@ -69,6 +69,8 @@ public class Constants {
             public static final String EMAIL_IS_INVALID = "Email is invalid";
             public static final String EMAIL_IS_TAKEN = "Email is taken";
             public static final String FIRST_NAME_IS_REQUIRED = "First name is required";
+            public static final String USERNAME_IS_REQUIRED = "Username is required";
+            public static final String USERNAME_IS_TAKEN = "Username is taken";
             public static final String PASSWORD_IS_REQUIRED = "Password is required";
             public static final String PASSWORD_CONFIRMATION_IS_REQUIRED = "Password confirmation is required";
             public static final String PASSWORD_IS_TOO_SHORT = "Password is too short";
