@@ -1,7 +1,10 @@
 package id.kevinchristian.snap.service.impl;
 
+import id.kevinchristian.snap.domain.User;
+import id.kevinchristian.snap.dto.response.UserResponseDTO;
 import id.kevinchristian.snap.exception.ResourceNotFoundException;
 import id.kevinchristian.snap.repository.UserRepository;
+import id.kevinchristian.snap.service.AuthService;
 import id.kevinchristian.snap.service.UserService;
 import id.kevinchristian.snap.util.Constants;
 import lombok.AllArgsConstructor;
@@ -15,6 +18,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetails findByEmail(String email) {
-        return userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException(Constants.ErrorMessage.Service.User.USER_NOT_FOUND));
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException(Constants.ErrorMessage.Service.User.USER_NOT_FOUND));
     }
 }

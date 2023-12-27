@@ -1,5 +1,6 @@
 package id.kevinchristian.snap.service;
 
+import id.kevinchristian.snap.domain.User;
 import id.kevinchristian.snap.dto.request.UserCreateRequestDTO;
 import id.kevinchristian.snap.dto.response.UserResponseDTO;
 
@@ -8,5 +9,7 @@ public interface AuthService {
 
     UserResponseDTO findCurrentUserDetails();
 
-    void sendEmailConfirmation();
+    User findCurrentUser();
+
+    void sendConfirmationCode();
 }

@@ -38,7 +38,7 @@ public class AuthResource {
 
     @GetMapping("/v1/auth/confirm-email")
     public ResponseEntity<Void> getMethodName() {
-        authService.sendEmailConfirmation();
+        authService.sendConfirmationCode();
         return ResponseEntity.ok().build();
     }
     

@@ -91,4 +91,12 @@ public class Constants {
             }
         }
     }
+
+    public static final class Email {
+        Email() {
+            throw new IllegalStateException(CONSTANTS);
+        }
+
+        public static final String EMAIL_CONFIRMATION_SUBJECT = "Confirm Your Email";
+    }
 }
