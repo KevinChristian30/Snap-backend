@@ -96,7 +96,8 @@ public class Constants {
                 }
 
                 public static final String CODE_INVALID = "Code is invalid";
-                public static final String CODE_EXPIRED = "Code is expired";
+                public static final String CODE_EXPIRED = "Code is invalid";
+                public static final String EMAIL_CONFIRMED = "Your email is already confirmed";
             }
         }
     }

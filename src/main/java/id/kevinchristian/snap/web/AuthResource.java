@@ -16,8 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
+    
 @RestController
 @AllArgsConstructor
 public class AuthResource {

@@ -70,6 +70,10 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public void sendEmailConfirmationCode() {
         User user = findCurrentUser();
+        if (user.getEmailConfirmed()) {
+            throw new BadRequestException(Constants.ErrorMessage.Service.Auth.EMAIL_CONFIRMED);
+        }
+
         String code = CodeUtil.generateCode();
 
         createOrUpdateEmailConfirmationCode(user, code);
@@ -113,6 +117,10 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public void verifyEmailConfirmationCode(EmailConfirmationCodeVerifyRequestDTO dto) {
         User user = findCurrentUser();
+        if (user.getEmailConfirmed()) {
+            throw new BadRequestException(Constants.ErrorMessage.Service.Auth.EMAIL_CONFIRMED);
+        }
+
         EmailConfirmationCode emailConfirmationCode = emailConfirmationCodeRepository.findByUser(user)
                 .orElseThrow(() -> new ResourceNotFoundException(Constants.ErrorMessage.Service.User.USER_NOT_FOUND));
 
