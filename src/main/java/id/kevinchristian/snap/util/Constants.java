@@ -89,6 +89,15 @@ public class Constants {
 
                 public static final String USER_NOT_FOUND = "User not found";
             }
+        
+            public static final class Auth {
+                Auth() throws IllegalAccessException {
+                    throw new IllegalStateException();
+                }
+
+                public static final String CODE_INVALID = "Code is invalid";
+                public static final String CODE_EXPIRED = "Code is expired";
+            }
         }
     }
 

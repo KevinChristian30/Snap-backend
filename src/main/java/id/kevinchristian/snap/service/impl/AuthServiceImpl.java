@@ -3,6 +3,7 @@ package id.kevinchristian.snap.service.impl;
 import id.kevinchristian.snap.config.properties.ApplicationProperties;
 import id.kevinchristian.snap.domain.EmailConfirmationCode;
 import id.kevinchristian.snap.domain.User;
+import id.kevinchristian.snap.dto.request.EmailConfirmationCodeVerifyRequestDTO;
 import id.kevinchristian.snap.dto.request.UserCreateRequestDTO;
 import id.kevinchristian.snap.dto.response.UserResponseDTO;
 import id.kevinchristian.snap.exception.BadRequestException;
@@ -67,7 +68,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void sendConfirmationCode() {
+    public void sendEmailConfirmationCode() {
         User user = findCurrentUser();
         String code = CodeUtil.generateCode();
 
@@ -107,5 +108,24 @@ public class AuthServiceImpl implements AuthService {
                 code, applicationProperties.getEmailConfirmationCodeValidityDurationInMinutes()));
 
         mailSender.send(simpleMailMessage);
+    }
+
+    @Override
+    public void verifyEmailConfirmationCode(EmailConfirmationCodeVerifyRequestDTO dto) {
+        User user = findCurrentUser();
+        EmailConfirmationCode emailConfirmationCode = emailConfirmationCodeRepository.findByUser(user)
+                .orElseThrow(() -> new ResourceNotFoundException(Constants.ErrorMessage.Service.User.USER_NOT_FOUND));
+
+        if (!emailConfirmationCode.getCode().equals(dto.code())) {
+            throw new BadRequestException(Constants.ErrorMessage.Service.Auth.CODE_INVALID);
+        }
+
+        if (ChronoUnit.MINUTES.between(emailConfirmationCode.getLastRequestedAt(),
+                LocalDateTime.now()) > applicationProperties.getEmailConfirmationCodeValidityDurationInMinutes()) {
+            throw new BadRequestException(Constants.ErrorMessage.Service.Auth.CODE_EXPIRED);
+        }
+
+        user.setEmailConfirmed(true);
+        userRepository.save(user);
     }
 }
