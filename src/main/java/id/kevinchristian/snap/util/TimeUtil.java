@@ -1,7 +1,5 @@
 package id.kevinchristian.snap.util;
 
-import lombok.AllArgsConstructor;
-
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;

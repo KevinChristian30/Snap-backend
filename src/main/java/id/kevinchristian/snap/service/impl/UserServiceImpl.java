@@ -15,6 +15,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetails findByEmail(String email) {
-        return userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException(Constants.ErrorMessage.Service.User.USER_NOT_FOUND));
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException(Constants.ErrorMessage.Service.User.USER_NOT_FOUND));
     }
 }

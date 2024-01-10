@@ -1,10 +1,10 @@
 package id.kevinchristian.snap.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import id.kevinchristian.snap.domain.User;
 import id.kevinchristian.snap.security.model.JWTAccessToken;
 import id.kevinchristian.snap.security.util.JWTTokenFactory;
 import id.kevinchristian.snap.util.Constants;
-import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -12,7 +12,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import java.io.IOException;
@@ -27,9 +26,9 @@ public class EmailAndPasswordAuthSuccessHandler implements AuthenticationSuccess
     @Override
     public void onAuthenticationSuccess(
             HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        JWTAccessToken token = jwtTokenFactory.createJWTAccessToken(userDetails.getUsername(),
-                userDetails.getAuthorities());
+        User user = (User) authentication.getPrincipal();
+        JWTAccessToken token = jwtTokenFactory.createJWTAccessToken(user,
+                user.getAuthorities());
 
         Map<String, String> result = new HashMap<>();
         result.put(Constants.ResponseBodyKey.TOKEN, token.getToken());

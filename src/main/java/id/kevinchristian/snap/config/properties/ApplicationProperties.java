@@ -11,4 +11,7 @@ public class ApplicationProperties {
     private Integer tokenDurationInMinutes;
     private String tokenIssuer;
     private String key;
+    private String clientUrl;
+    private Integer emailConfirmationRequestIntervalInMinutes;
+    private Integer emailConfirmationCodeValidityDurationInMinutes;
 }

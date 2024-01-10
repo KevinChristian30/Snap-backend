@@ -16,7 +16,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,10 +31,12 @@ public class JWTAuthProvider implements AuthenticationProvider {
 
         String subject = jwsClaims.getBody().getSubject();
         List<String> roles = jwsClaims.getBody().get(Constants.ClaimsKey.ROLES, List.class);
-        List<GrantedAuthority> grantedAuthorities =
-                roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+        List<GrantedAuthority> grantedAuthorities = roles.stream().map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
 
-        UserDetails userDetails = new SnapUserDetails(subject, grantedAuthorities);
+        UserDetails userDetails = new SnapUserDetails(subject,
+                jwsClaims.getBody().get(Constants.ClaimsKey.USERNAME, String.class), grantedAuthorities,
+                jwsClaims.getBody().get(Constants.ClaimsKey.IS_EMAIL_VERIFIED, Boolean.class));
 
         return new JWTAuthToken(userDetails, grantedAuthorities);
     }

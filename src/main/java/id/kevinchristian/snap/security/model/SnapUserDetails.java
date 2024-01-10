@@ -12,7 +12,13 @@ import java.util.List;
 @Data
 public class SnapUserDetails implements UserDetails {
     private String subject;
+    private String username;
     private List<GrantedAuthority> grantedAuthorities;
+    private Boolean isEmailVerified;
+
+    public Boolean getIsEmailVerified() {
+        return isEmailVerified;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -26,7 +32,7 @@ public class SnapUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return subject;
+        return username;
     }
 
     @Override
