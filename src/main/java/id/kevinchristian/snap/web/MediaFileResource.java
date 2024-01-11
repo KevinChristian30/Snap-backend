@@ -17,7 +17,7 @@ public class MediaFileResource {
     private final MediaFileService mediaFileService;
 
     @PostMapping("/v1/media-file")
-    public ResponseEntity<MediaFileResponseDTO> postMethodName(@RequestBody MultipartFile file) {
+    public ResponseEntity<MediaFileResponseDTO> create(@RequestBody MultipartFile file) {
         return ResponseEntity.ok(mediaFileService.upload(file));
     }
 }
