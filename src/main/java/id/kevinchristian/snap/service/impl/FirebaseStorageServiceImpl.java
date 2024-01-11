@@ -28,29 +28,34 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class FirebaseStorageServiceImpl implements CloudStorageService {
     private static final String BUCKET_NAME = "snap-346c3.appspot.com";
-    private static final String DOWNLOAD_URL = "https://firebasestorage.googleapis.com/v0/b/" + BUCKET_NAME +"/o/%s?alt=media";
+    private static final String DOWNLOAD_URL = "https://firebasestorage.googleapis.com/v0/b/" + BUCKET_NAME
+            + "/o/%s?alt=media";
+    private static final String FIREBASE_PRIVATE_KEY_FILE_LOCATION = "src/main/resources/firebase/snap-346c3-firebase-adminsdk-5f4va-dc92eae34e.json";
 
     @Override
     public MediaFileResponseDTO upload(MultipartFile multipartFile) {
         try {
             String fileName = multipartFile.getOriginalFilename();
-            fileName = UUID.randomUUID().toString().concat(getExtention(fileName));
+            String id = UUID.randomUUID().toString();
+            fileName = id.concat(getExtention(fileName));
 
             File file = convertToFile(multipartFile, fileName);
             String fileURL = uploadFile(file, fileName);
             file.delete();
 
-            return new MediaFileResponseDTO("ID", fileName, multipartFile.getContentType(), fileURL);
+            return new MediaFileResponseDTO(id, fileName, multipartFile.getContentType(), fileURL);
         } catch (Exception e) {
             return null;
         }
     }
 
     private String uploadFile(File file, String fileName) throws IOException {
+        String contentType = "media";
+
         BlobId blobId = BlobId.of(BUCKET_NAME, fileName);
-        BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("media").build();
+        BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(contentType).build();
         Credentials credentials = GoogleCredentials.fromStream(
-                new FileInputStream("src/main/resources/firebase/snap-346c3-firebase-adminsdk-5f4va-d07be35ad2.json"));
+                new FileInputStream(FIREBASE_PRIVATE_KEY_FILE_LOCATION));
 
         Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
         storage.create(blobInfo, Files.readAllBytes(file.toPath()));
@@ -73,6 +78,7 @@ public class FirebaseStorageServiceImpl implements CloudStorageService {
     }
 
     private String getExtention(String fileName) {
-        return fileName.substring(fileName.lastIndexOf("."));
+        String denominator = ".";
+        return fileName.substring(fileName.lastIndexOf(denominator));
     }
 }
