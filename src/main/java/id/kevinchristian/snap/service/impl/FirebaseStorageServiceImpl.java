@@ -33,7 +33,7 @@ public class FirebaseStorageServiceImpl implements CloudStorageService {
     private static final String FIREBASE_PRIVATE_KEY_FILE_LOCATION = "src/main/resources/firebase/snap-346c3-firebase-adminsdk-5f4va-dc92eae34e.json";
 
     @Override
-    public MediaFileResponseDTO upload(MultipartFile multipartFile) {
+    public MediaFileResponseDTO upload(MultipartFile multipartFile) throws IOException {
         try {
             String fileName = multipartFile.getOriginalFilename();
             String id = UUID.randomUUID().toString();
@@ -44,8 +44,8 @@ public class FirebaseStorageServiceImpl implements CloudStorageService {
             file.delete();
 
             return new MediaFileResponseDTO(id, fileName, multipartFile.getContentType(), fileURL);
-        } catch (Exception e) {
-            return null;
+        } catch (IOException e) {
+            throw new IOException(e.getLocalizedMessage());
         }
     }
 
@@ -69,9 +69,9 @@ public class FirebaseStorageServiceImpl implements CloudStorageService {
             fileOutputStream.write(multipartFile.getBytes());
             fileOutputStream.close();
         } catch (FileNotFoundException e) {
-
+            throw new FileNotFoundException(e.getLocalizedMessage());
         } catch (IOException e) {
-
+            throw new IOException(e.getLocalizedMessage());
         }
 
         return file;
