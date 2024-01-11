@@ -33,3 +33,5 @@ build/
 .vscode/
 
 src/main/resources/application-local.yaml
+src/main/resources/firebase
+src/main/java/id/kevinchristian/snap/service/impl/FirebaseStorageServiceImpl.java
