@@ -32,6 +32,6 @@ public class Snap extends AbstractBaseEntity {
     private User user;
 
     @OneToOne
-    @JoinColumn(name = "media_file_id", referencedColumnName = "id")
+    @JoinColumn(name = "media_file_id", referencedColumnName = "id", updatable = false)
     private MediaFile mediaFile;
 }

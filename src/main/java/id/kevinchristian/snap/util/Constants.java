@@ -112,6 +112,7 @@ public class Constants {
                 }
 
                 public static final String MEDIA_FILE_NOT_FOUND = "Media file is not found";
+                public static final String SNAP_NOT_FOUND = "Snap not found";
             }
         }
 

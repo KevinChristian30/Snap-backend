@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import id.kevinchristian.snap.domain.MediaFile;
 import id.kevinchristian.snap.domain.Snap;
 import id.kevinchristian.snap.dto.request.SnapCreateRequestDTO;
+import id.kevinchristian.snap.dto.request.SnapUpdateRequestDTO;
 import id.kevinchristian.snap.exception.ResourceNotFoundException;
 import id.kevinchristian.snap.repository.MediaFileRepository;
 import id.kevinchristian.snap.repository.SnapRepository;
@@ -30,9 +31,22 @@ public class SnapServiceImpl implements SnapService {
         snapRepository.save(snap);
     }
 
-    MediaFile findMediaFile(String mediaFileId) {
+    @Override
+    public void update(String snapId, SnapUpdateRequestDTO dto) {
+        Snap snap = findSnap(snapId);
+        snap.setDescription(dto.description());
+
+        snapRepository.save(snap);
+    }
+
+    private MediaFile findMediaFile(String mediaFileId) {
         return mediaFileRepository.findBySecureId(mediaFileId)
                 .orElseThrow(
                         () -> new ResourceNotFoundException(Constants.ErrorMessage.Service.Snap.MEDIA_FILE_NOT_FOUND));
+    }
+
+    private Snap findSnap(String snapId) {
+        return snapRepository.findBySecureId(snapId)
+                .orElseThrow(() -> new ResourceNotFoundException(Constants.ErrorMessage.Service.Snap.SNAP_NOT_FOUND));
     }
 }
