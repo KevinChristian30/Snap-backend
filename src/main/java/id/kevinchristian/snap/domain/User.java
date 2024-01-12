@@ -50,6 +50,9 @@ public class User extends AbstractBaseEntity implements UserDetails {
             inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
     private List<Role> roles;
 
+    @OneToMany(mappedBy = "user")
+    private List<Snap> snaps;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles;
