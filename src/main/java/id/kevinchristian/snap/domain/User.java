@@ -42,6 +42,9 @@ public class User extends AbstractBaseEntity implements UserDetails {
     @Column(name = "last_name")
     private String lastName;
 
+    @Column(name = "bio")
+    private String bio;
+
     @Column(name = "is_email_confirmed", nullable = false)
     private Boolean emailConfirmed = false;
 
