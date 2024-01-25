@@ -39,6 +39,13 @@ public class SnapServiceImpl implements SnapService {
         snapRepository.save(snap);
     }
 
+    @Override
+    public void delete(String snapId) {
+        Snap snap = findSnap(snapId);
+        snap.setDeleted(true);
+        snapRepository.save(snap);
+    }
+
     private MediaFile findMediaFile(String mediaFileId) {
         return mediaFileRepository.findBySecureId(mediaFileId)
                 .orElseThrow(

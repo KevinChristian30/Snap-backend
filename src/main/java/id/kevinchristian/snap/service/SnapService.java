@@ -7,4 +7,6 @@ public interface SnapService {
     void create(SnapCreateRequestDTO dto);
 
     void update(String snapId, SnapUpdateRequestDTO dto);
+
+    void delete(String snapId);
 }
